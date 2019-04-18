@@ -1,7 +1,6 @@
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class App extends NanoHTTPD {
 
@@ -21,13 +20,15 @@ public class App extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        String msg = "<html><body><h1>Hello server</h1>\n";
-        Map<String, String> parms = session.getParms();
-        if (parms.get("username") == null) {
-            msg += "<form action='?' method='get'>\n  <p>Your name: <input type='text' name='username'></p>\n" + "</form>\n";
-        } else {
-            msg += "<p>Hello, " + parms.get("username") + "!</p>";
-        }
-        return newFixedLengthResponse(msg + "</body></html>\n");
+        session.getParameters();
+        int x =  Integer.parseInt(session.getParameters().get("x").get(0));
+        int y =  Integer.parseInt(session.getParameters().get("y").get(0));
+        int leftClick =  Integer.parseInt(session.getParameters().get("leftClick").get(0));
+        int rightClick =  Integer.parseInt(session.getParameters().get("rightClick").get(0));
+        MouseController.getInstance().moveMouse(x, y);
+        
+        System.out.println(x);
+        return newFixedLengthResponse("ok");
     }
+
 }
